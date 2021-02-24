@@ -19,14 +19,15 @@ provider "kubernetes" {
 module "iota_hassio_eks" {
   source          = "git@github.com:terraform-aws-modules/terraform-aws-eks.git"
   cluster_name    = "iota-hass-eks-001"
-  # subnets         = data.terraform_remote_state.iota_hass_vpc.outputs.private_subnets
-  # vpc_id          = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_id
+  subnets         = data.terraform_remote_state.iota_hass_vpc.outputs.private_subnets
+  vpc_id          = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_id
 
-  subnets         = [
-    "subnet-0365aa576bafbb5c9",
-    "subnet-03767bd7ff645b64c",
-  ]
-  vpc_id          = "vpc-094c76090c5b3445f"
+  # subnets         = [
+  #   "subnet-0365aa576bafbb5c9",
+  #   "subnet-03767bd7ff645b64c",
+  # ]
+  # vpc_id          = "vpc-094c76090c5b3445f"
+  
   cluster_version = "1.16"
   cluster_endpoint_private_access = true
 
@@ -72,10 +73,10 @@ module "hass_eks_secgr_ssh" {
   source                   = "git@github.com:terraform-aws-modules/terraform-aws-security-group.git"
   name                     = "hass-eks-secgr-ssh"
   use_name_prefix          = false
-  # vpc_id                   = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_id
-  # ingress_cidr_blocks      = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_cidr_block
-  vpc_id = "vpc-094c76090c5b3445f"
-  ingress_cidr_blocks = ["10.0.0.0/16"]
+  vpc_id                   = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_id
+  ingress_cidr_blocks      = data.terraform_remote_state.iota_hass_vpc.outputs.vpc_cidr_block
+  # vpc_id = "vpc-094c76090c5b3445f"
+  # ingress_cidr_blocks = ["10.0.0.0/16"]
   ingress_rules            = ["ssh-tcp", "all-icmp"]
   egress_rules             = ["all-all"]
 
