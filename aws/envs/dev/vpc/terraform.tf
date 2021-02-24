@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "tfstate"
+    bucket = "hass-tf-remote-state"
     key    = "dev/vpc/"
     region = "ap-southeast-1"
   }
